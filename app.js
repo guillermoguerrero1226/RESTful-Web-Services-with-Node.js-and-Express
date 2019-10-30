@@ -3,7 +3,13 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 const app = express();
-const db = mongoose.connect("mongodb://localhost/restApi")
+
+if (process.env.ENV === "Test") {
+    const db = mongoose.connect("mongodb://localhost/restApi_Test");
+    console.log("Test database connected");
+} else{
+    const db = mongoose.connect("mongodb://localhost/restApi");
+}
 
 const port = process.env.PORT || 3000;
 
@@ -19,7 +25,7 @@ app.get("/", (req, res) => {
     res.send("Welcome to my API!");
 });
 
-app.listen(port, () => {
+app.server = app.listen(port, () => {
     console.log("Running port" + port);
 })
 
